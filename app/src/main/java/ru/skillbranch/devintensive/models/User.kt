@@ -33,7 +33,7 @@ data class User (
     }
 
     companion object Factory {
-        private var lastId : Int = 1
+        private var lastId : Int = -1
 
         fun makeUser(fullName:String?) : User {
 
@@ -43,26 +43,4 @@ data class User (
             return User(id = "$lastId", firstName = firstName, lastName = lastName)
         }
     }
-    /*
-    data class  Builder(
-        val id:String = "",
-        var firstName:String = "",
-        var lastName:String = "",
-        var avatar:String = "",
-        var rating:Int = 0,
-        var respect:Int = 0,
-        var lastVisit:Date = Date(),
-        var isOnline:Boolean = false
-    ) {
-        fun id(id: String) = apply { this@Builder.id = id }
-        fun firstName(firstName: String) = apply { this@Builder.firstName = firstName }
-        fun lastName(lastName: String) = apply { this@Builder.lastName = lastName }
-        fun avatar(avatar: String) = apply { this@Builder.avatar = avatar }
-        fun rating(rating: Int) = apply { this@Builder.avatar = avatar }
-        fun respect(respect: Int) = apply { this@Builder.respect = respect }
-        fun lastVisit(lastVisit: Date) = apply { this@Builder.lastVisit = lastVisit }
-        fun isOnline(isOnline: Boolean) = apply { this@Builder.isOnline = isOnline }
-        fun build() = User(id, firstName, lastName, avatar,rating, respect, lastVisit, isOnline)
-    }
-    */
 }

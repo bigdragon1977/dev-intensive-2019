@@ -9,7 +9,7 @@ const val MINUTE = 60 * SECOND
 const val HOUR   = 60 * MINUTE
 const val DAY    = 24 * HOUR
 
-fun Date.format(pattern:String = "HH:mm:ss dd:MM:yy"): String {
+fun Date.format(pattern:String = "HH:mm:ss dd.MM.yy"): String {
     val dateFormat = SimpleDateFormat(pattern, Locale("ru"))
     return dateFormat.format(this)
 }
@@ -19,8 +19,8 @@ fun Date.add(value:Int, units: TimeUnits = TimeUnits.SECOND) : Date {
     time += when(units) {
         TimeUnits.SECOND -> value * SECOND
         TimeUnits.MINUTE -> value * MINUTE
-        TimeUnits.HOUR    -> value * HOUR
-        TimeUnits.DAY       -> value * DAY
+        TimeUnits.HOUR -> value * HOUR
+        TimeUnits.DAY -> value * DAY
     }
     this.time = time
     return this
@@ -28,17 +28,32 @@ fun Date.add(value:Int, units: TimeUnits = TimeUnits.SECOND) : Date {
 
 
 fun Date.humanizeDiff(date: Date = Date()): String  {
-    val diff = date.time - this.time
+    fun isLater(later: Boolean, diffString: String): String {
+        return if (later) {
+            "через ${diffString}"
+        } else {
+            "${diffString} назад"
+        }
+    }
+    var diff = 0L
+    var later = false
+    if (this.time > date.time) {
+        later = true
+        diff = this.time - date.time
+    } else {
+        diff = date.time - this.time
+    }
     return when(diff) {
         in 0 .. SECOND -> "только что"
         in SECOND .. 45 * SECOND  -> "несколько секунд назад"
         in SECOND *45 .. SECOND * 75  -> "минуту назад"
-        in SECOND *75 .. 45 * MINUTE -> "${TimeUnits.MINUTE.plural((diff / MINUTE).toInt())} назад"
+        in SECOND *75 .. 45 * MINUTE -> isLater(later,TimeUnits.MINUTE.plural((diff / MINUTE).toInt()))
         in 45 * MINUTE .. 75 * MINUTE -> "час назад"
-        in 75 * MINUTE .. 22 * HOUR -> "${TimeUnits.HOUR.plural((diff / HOUR).toInt())} назад"
+        in 75 * MINUTE .. 22 * HOUR -> isLater(later, TimeUnits.HOUR.plural((diff / HOUR).toInt()))
         in 22 * HOUR .. 26 * HOUR -> "день назад"
-        in 26 * HOUR .. 360 * DAY -> "${TimeUnits.DAY.plural((diff / DAY).toInt())} назад"
-        else -> "более года назад"
+        in 26 * HOUR .. 360 * DAY -> isLater(later, TimeUnits.DAY.plural((diff / DAY).toInt()))
+        //later -> "более чем через год"
+        else -> if (later) {"более чем через год"} else {"более года назад"}
     }
 }
 

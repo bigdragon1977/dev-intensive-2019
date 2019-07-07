@@ -18,7 +18,7 @@ object Utils {
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
-        var result = payload.replace(Regex("[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]")) {
+        var result = payload.replace(Regex("[а-яА-Я]")) {
             when (it.value) {
                 "а"->"a"
                 "б"->"b"
@@ -53,6 +53,40 @@ object Utils {
                 "э"->"e"
                 "ю"->"yu"
                 "я"->"ya"
+                "А"->"A"
+                "Б"->"B"
+                "В"->"V"
+                "Г"->"G"
+                "Д"->"D"
+                "Е"->"E"
+                "Ё"->"E"
+                "Ж"->"Zh"
+                "З"->"Z"
+                "И"->"I"
+                "Й"->"I"
+                "К"->"K"
+                "Л"->"L"
+                "М"->"M"
+                "Н"->"N"
+                "О"->"O"
+                "П"->"P"
+                "Р"->"R"
+                "С"->"S"
+                "Т"->"T"
+                "У"->"U"
+                "Ф"->"F"
+                "Х"->"H"
+                "Ц"->"C"
+                "Ч"->"Ch"
+                "Ш"->"Sh"
+                "Щ"->"Sh'"
+                "Ъ"->""
+                "Ы"->"I"
+                "Ь"->""
+                "Э"->"E"
+                "Ю"->"Yu"
+                "Я"->"Ya"
+
                 else -> it.value
             }
 

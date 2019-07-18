@@ -18,7 +18,7 @@ class Bender(var status:Status = Status.NORMAL, var question: Question = Questio
             return when(question) {
                 Question.NAME -> "^[A-ZА-Я].*".toRegex().matches(answer)
                 Question.PROFESSION -> "^[a-zа-я].*".toRegex().matches(answer)
-                Question.MATERIAL -> "^[a-za-z]{1,}$".toRegex().matches(answer)
+                Question.MATERIAL -> "^[^0-9]{1,}$".toRegex().matches(answer)
                 Question.BDAY -> "^[0-9]{4,}".toRegex().matches(answer)
                 Question.SERIAL -> "^[0-9]{7}$".toRegex().matches(answer)
                 else -> true
@@ -39,7 +39,6 @@ class Bender(var status:Status = Status.NORMAL, var question: Question = Questio
                     question = Question.NAME
                     "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
                 } else {
-                    status = status.nextStatus()
                     "Имя должно начинаться с заглавной буквы\n${question.question}" to status.color
                 }
             Question.PROFESSION ->
@@ -54,22 +53,20 @@ class Bender(var status:Status = Status.NORMAL, var question: Question = Questio
                     question = Question.NAME
                     "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
                 } else {
-                    status = status.nextStatus()
                     "Профессия должна начинаться со строчной буквы\n${question.question}" to status.color
                 }
             Question.MATERIAL ->
                 if (validateAnswer(answer) && question.answer.contains(answer)) {
                     question = question.nextQuestion()
                     "Отлично - ты справился\n${question.question}" to status.color
+                }  else if (validateAnswer(answer) && !question.answer.contains(answer)) {
+                    status = status.nextStatus()
+                    "Это неправильный ответ\n${question.question}" to status.color
                 } else if ((!validateAnswer(answer) || !question.answer.contains(answer)) && (status.color == Status.CRITICAL.color) ) {
                     status = Status.NORMAL
                     question = Question.NAME
                     "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
-                }  else if (validateAnswer(answer) && !question.answer.contains(answer) && (status.color != Status.CRITICAL.color)) {
-                    status = status.nextStatus()
-                    "Это неправильный ответ\n${question.question}" to status.color
                 } else {
-                    status = status.nextStatus()
                     "Материал не должен содержать цифр\n${question.question}" to status.color
                 }
             Question.BDAY ->
@@ -84,7 +81,6 @@ class Bender(var status:Status = Status.NORMAL, var question: Question = Questio
                     status = status.nextStatus()
                     "Это неправильный ответ\n${question.question}" to status.color
                 } else {
-                    status = status.nextStatus()
                     "Год моего рождения должен содержать только цифры\n${question.question}" to status.color
                 }
             Question.SERIAL ->
@@ -99,12 +95,11 @@ class Bender(var status:Status = Status.NORMAL, var question: Question = Questio
                     status = status.nextStatus()
                     "Это неправильный ответ\n${question.question}" to status.color
                 } else {
-                    status = status.nextStatus()
                     "Серийный номер содержит только цифры, и их 7\n${question.question}" to status.color
                 }
             Question.IDLE -> {
                     question = Question.IDLE
-                    status = Status.NORMAL
+                    //status = Status.NORMAL
                     question.question to status.color
                 }
 

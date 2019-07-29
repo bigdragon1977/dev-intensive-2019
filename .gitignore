@@ -22,6 +22,8 @@ app/src/androidTest/
 # Signing files
 .signing/
 
+captures/
+
 # User-specific configurations
 .idea/
 *.iml

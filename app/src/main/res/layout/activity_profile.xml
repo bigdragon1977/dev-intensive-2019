@@ -48,7 +48,7 @@
                     android:layout_marginTop="36dp"/>
             <TextView
                     style="@style/Profile.Header.Nickname"
-                    android:id="@+id/tv_nik_name"
+                    android:id="@+id/tv_nick_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/iv_avatar"
@@ -60,7 +60,7 @@
                     android:id="@+id/tv_rank"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_nik_name"
+                    android:layout_below="@+id/tv_nick_name"
                     android:layout_centerHorizontal="true"
                     android:text="Junior Android Developer"
             />
@@ -224,6 +224,7 @@
                 android:layout_height="@dimen/btn_round_size_40"
                 android:src="@drawable/ic_repo"/>
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/wr_repository"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_normal_16"
